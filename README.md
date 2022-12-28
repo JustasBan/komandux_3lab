@@ -1,2 +1,5 @@
 # komandux 3rd lab
-Software design class 3rd labaratory work
+Implementation of POS
+
+User stories and maps by "JAKE"
+API endpoints by "pythonistai"
