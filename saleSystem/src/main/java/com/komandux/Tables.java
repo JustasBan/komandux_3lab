@@ -143,7 +143,7 @@ public class Tables {
 				+ "  org_id            INTEGER     NOT NULL,\r\n"
 				+ "  access            TEXT,\r\n"
 				+ "  CONSTRAINT  FKuser_id  FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE NO ACTION,\r\n"
-				+ "  CONSTRAINT  FKorg_id   FOREIGN KEY(org_id) REFERENCES users(id) ON DELETE NO ACTION\r\n"
+				+ "  CONSTRAINT  FKorg_id   FOREIGN KEY(org_id) REFERENCES organizations(id) ON DELETE NO ACTION\r\n"
 				+ ");";
 		
 		Statement statement;
