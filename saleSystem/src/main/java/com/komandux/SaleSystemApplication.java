@@ -1,5 +1,7 @@
 package com.komandux;
 
+import java.sql.SQLException;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -14,6 +16,12 @@ public class SaleSystemApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SaleSystemApplication.class, args);
+		
+		try {
+			Tables.createAllTables();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public Docket apis() {
