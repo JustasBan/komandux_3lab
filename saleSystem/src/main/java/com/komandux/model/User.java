@@ -1,6 +1,7 @@
 package com.komandux.model;
 
 import java.time.LocalTime;
+import java.util.Date;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -8,7 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel
 public class User {
 	@ApiModelProperty(dataType="int")
-	private int id;
+	private int user_id;
 	@ApiModelProperty(dataType="String")
 	private String password;
 	@ApiModelProperty(dataType="String")
@@ -16,16 +17,16 @@ public class User {
 	@ApiModelProperty(dataType="String")
 	private String full_name;
 	@ApiModelProperty(dataType="LocalTime")
-	private LocalTime created_date;
+	private Date created_date;
 	@ApiModelProperty(dataType="String")
 	private String phonenumber;
 	
 	public int getId() {
-		return id;
+		return user_id;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setId(int user_id) {
+		this.user_id = user_id;
 	}
 
 	public String getPassword() {
@@ -52,11 +53,11 @@ public class User {
 		this.full_name = full_name;
 	}
 
-	public LocalTime getCreated_date() {
+	public Date getCreated_date() {
 		return created_date;
 	}
 
-	public void setCreated_date(LocalTime created_date) {
+	public void setCreated_date(Date created_date) {
 		this.created_date = created_date;
 	}
 
@@ -68,9 +69,9 @@ public class User {
 		this.phonenumber = phonenumber;
 	}
 
-	public User(int id, String password, String email, String full_name, LocalTime created_date, String phonenumber) {
+	public User(int user_id, String password, String email, String full_name, Date created_date, String phonenumber) {
 		super();
-		this.id = id;
+		this.user_id = user_id;
 		this.password = password;
 		this.email = email;
 		this.full_name = full_name;
@@ -80,6 +81,10 @@ public class User {
 
 	public User() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public User(int user_id2) {
+		this.user_id = user_id2;
 	}
 	
 	

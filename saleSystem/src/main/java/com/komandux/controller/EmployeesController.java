@@ -2,12 +2,16 @@ package com.komandux.controller;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,6 +54,7 @@ public class EmployeesController {
 		public int org_id;
 	}
 	
+	//Add Employee endpoint
 	@ApiOperation(value = "Add Employee", response = Employee.class, tags = "Employee")
     @PostMapping(value = "/organizations/{organization_id}/employees/")
     public ResponseEntity<?> createEmployee(@PathVariable(value = "organization_id") int organization_id, @RequestBody EmployeeDTO employeeDTO) {
@@ -63,7 +68,7 @@ public class EmployeesController {
 		}
 		
 		String sql = "INSERT INTO employee_organizations(user_id, org_id, access) VALUES ("
-				+ Integer.toString(employee.getUser_id()) + "," 
+				+ Integer.toString(employee.getId()) + "," 
 				+ Integer.toString(employee.getOrg_id()) + "," 
 				+ "\'" + employee.getAccess().toJSONString() + "\');";
 		
@@ -74,7 +79,9 @@ public class EmployeesController {
 			Statement statement;
 			statement = connection.createStatement();
 			statement.executeUpdate(sql);
-			
+
+			connection.close();
+			statement.close();
 			return new ResponseEntity<EmployeeResponseDTO>(new EmployeeResponseDTO(employeeDTO.user_id, employeeDTO.access, organization_id), HttpStatus.OK);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -82,4 +89,40 @@ public class EmployeesController {
 			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}        
     }
+	
+	//getEmployee endpoint
+	@ApiOperation(value = "Get Employee", response = Employee.class, tags = "Employee")
+    @GetMapping(value = "/organizations/{organization_id}/employees/{employee_id}")
+    public ResponseEntity<?> getEmployee(@PathVariable(value = "organization_id") int organization_id, @PathVariable(value = "employee_id") int employee_id) throws ParseException{
+				
+		String sql = "SELECT user_id, org_id, access, password_hash, email, full_name, created_timestamp, phone_number FROM users INNER JOIN employee_organizations ON users.id = employee_organizations.user_id WHERE users.id =" + employee_id + " AND employee_organizations.org_id =" + organization_id +";";
+		try {
+			Connection connection = DriverManager.getConnection(Tables.getJdbcUrl());
+			Statement statement;
+			statement = connection.createStatement();
+			ResultSet rs = statement.executeQuery(sql);
+
+			while (rs.next()) {
+				JSONParser parser = new JSONParser();
+				java.util.Date newDate = rs.getTimestamp("created_timestamp");
+				Employee emp = new Employee(rs.getInt("user_id"), rs.getInt("org_id"), (JSONObject) parser.parse(rs.getString("access")), rs.getString("password_hash"), rs.getString("email"), rs.getString("full_name"), newDate, rs.getString("phone_number"));
+				
+				connection.close();
+				rs.close();
+				statement.close();
+				
+				return new ResponseEntity<Employee>(emp, HttpStatus.OK);
+			}
+			
+			connection.close();
+			rs.close();
+			statement.close();
+		
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			
+			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+		}        
+	}
 }
