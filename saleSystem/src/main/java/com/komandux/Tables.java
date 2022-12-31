@@ -6,10 +6,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Tables {
+	static String jdbcUrl = "jdbc:sqlite:sale.db";
 
 	public static void createAllTables() throws SQLException {
-		String jdbcUrl = "jdbc:sqlite:sale.db";
-		Connection connection = DriverManager.getConnection(jdbcUrl);
+		Connection connection = DriverManager.getConnection(getJdbcUrl());
 		createTableUsers(connection);
 		createTableInvoices(connection);
 		createTableTransactions(connection);
@@ -354,5 +354,9 @@ public class Tables {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static String getJdbcUrl() {
+		return jdbcUrl;
 	}
 }

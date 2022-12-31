@@ -77,6 +77,10 @@ public class User {
 		this.created_date = created_date;
 		this.phonenumber = phonenumber;
 	}
+
+	public User() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	
 }

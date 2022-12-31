@@ -3,6 +3,8 @@ package com.komandux.model;
 import java.time.LocalTime;
 
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -21,6 +23,15 @@ public class Employee extends User{
 		this.user_id = user_id;
 		this.org_id = org_id;
 		this.access = access;
+	}
+
+	public Employee(int user_id2, int organization_id, String access2) throws ParseException {
+		this.user_id = user_id2;
+		this.org_id = organization_id;
+		
+		JSONParser parser = new JSONParser();
+		System.out.println(access2);
+		this.access = (JSONObject) parser.parse(access2);
 	}
 
 	public int getUser_id() {
