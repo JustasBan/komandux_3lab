@@ -30,6 +30,24 @@ public class EmployeesController {
 		public int user_id;
 		@ApiModelProperty(dataType="JSONObject", example ="{\"access1\": true}")
 		public String access;
+		
+		public EmployeeDTO(int user_id, String access) {
+			super();
+			this.user_id = user_id;
+			this.access = access;
+		}
+	}
+	
+	@ApiModel
+	private static class EmployeeResponseDTO extends EmployeeDTO{
+
+		public EmployeeResponseDTO(int user_id, String access, int org_id) {
+			super(user_id, access);
+			this.org_id = org_id;
+		}
+
+		@ApiModelProperty(dataType="int")
+		public int org_id;
 	}
 	
 	@ApiOperation(value = "Add Employee", response = Employee.class, tags = "Employee")
@@ -56,8 +74,8 @@ public class EmployeesController {
 			Statement statement;
 			statement = connection.createStatement();
 			statement.executeUpdate(sql);
-
-			return new ResponseEntity<>(HttpStatus.OK);
+			
+			return new ResponseEntity<EmployeeResponseDTO>(new EmployeeResponseDTO(employeeDTO.user_id, employeeDTO.access, organization_id), HttpStatus.OK);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			
