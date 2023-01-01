@@ -46,7 +46,7 @@ public class CouponsController {
 		}
 	}
 
-    // Add coupon
+    // Post Coupon
 	@ApiOperation(value = "Add Coupon", response = Coupon.class, tags = "Coupons")
 	@PostMapping(value = "/organizations/{organization_id}/coupons")
 	public ResponseEntity<?> createCoupon(@PathVariable(value = "organization_id") int organization_id,
@@ -74,7 +74,7 @@ public class CouponsController {
 		}
 	}
 
-	// putEmployee endpoint, kartu su assign
+	// Put Coupon, kartu su assign
 	@ApiOperation(value = "Update Coupon", response = Coupon.class, tags = "Coupons")
 	@PutMapping(value = "/organizations/{organization_id}/coupons/{coupon_id}")
 	public ResponseEntity<?> putEmployee(@PathVariable(value = "organization_id") int organization_id,
