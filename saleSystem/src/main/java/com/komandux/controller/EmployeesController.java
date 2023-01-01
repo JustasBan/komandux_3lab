@@ -225,5 +225,5 @@ public class EmployeesController {
 		}
 	}
 
-	// didnt add update shift endpoint, since its unclear what it should update
+	// didnt add update shift endpoint, since its unclear what it should update from API documentation
 }
