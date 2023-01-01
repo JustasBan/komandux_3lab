@@ -195,14 +195,15 @@ public class EmployeesController {
 	// Add shift endpoint
 	@ApiOperation(value = "Add shift", response = Shift.class, tags = "Employee")
 	@PostMapping(value = "/organizations/{organization_id}/employees/{employee_id}/shifts")
-	public ResponseEntity<?> createShift(@PathVariable(value = "organization_id") int organization_id, @PathVariable(value = "employee_id") int employee_id, @RequestBody Shift shiftDTO) {
+	public ResponseEntity<?> createShift(@PathVariable(value = "organization_id") int organization_id,
+			@PathVariable(value = "employee_id") int employee_id, @RequestBody Shift shiftDTO) {
 
 		String sql = "INSERT INTO shifts (emp_org_id, start_time, end_time, created_timestamp) VALUES (?,?,?,?)";
 
 		System.out.println(sql);
 
 		try {
-			
+
 			Connection connection = DriverManager.getConnection(Tables.getJdbcUrl());
 			PreparedStatement statement;
 			statement = connection.prepareStatement(sql);
@@ -212,7 +213,7 @@ public class EmployeesController {
 			ts = Timestamp.valueOf(shiftDTO.getEnd_time());
 			statement.setTimestamp(3, ts);
 			statement.setInt(4, shiftDTO.getCreated_timestamp());
-			
+
 			statement.executeUpdate();
 
 			connection.close();
@@ -225,5 +226,37 @@ public class EmployeesController {
 		}
 	}
 
-	// didnt add update shift endpoint, since its unclear what it should update from API documentation
+	// update shift endpoint
+	@ApiOperation(value = "Update shift", response = Shift.class, tags = "Employee")
+	@PutMapping(value = "/organizations/{organization_id}/employees/{employee_id}/shifts/{shift_id}")
+	public ResponseEntity<?> updateShift(@PathVariable(value = "organization_id") int organization_id,
+			@PathVariable(value = "employee_id") int employee_id, @RequestBody Shift shiftDTO,
+			@PathVariable(value = "shift_id") int shift_id) {
+
+		String sql = "UPDATE shifts SET start_time = ?, end_time = ? WHERE id = ?";
+
+		System.out.println(sql);
+
+		try {
+
+			Connection connection = DriverManager.getConnection(Tables.getJdbcUrl());
+			PreparedStatement statement;
+			statement = connection.prepareStatement(sql);
+			Timestamp ts = Timestamp.valueOf(shiftDTO.getStart_time());
+			statement.setTimestamp(1, ts);
+			ts = Timestamp.valueOf(shiftDTO.getEnd_time());
+			statement.setTimestamp(2, ts);
+			statement.setInt(3, shift_id);
+
+			statement.executeUpdate();
+
+			connection.close();
+			statement.close();
+			return new ResponseEntity<Shift>(shiftDTO, HttpStatus.OK);
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+	}
 }

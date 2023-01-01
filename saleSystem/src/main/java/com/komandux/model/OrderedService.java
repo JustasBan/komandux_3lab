@@ -1,26 +1,24 @@
 package com.komandux.model;
 
-import java.time.LocalTime;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel
 public class OrderedService {
-	@ApiModelProperty(dataType="int")
+	@ApiModelProperty(dataType = "int")
 	private int id;
-	@ApiModelProperty(dataType="int")
+	@ApiModelProperty(dataType = "int")
 	private int order_id;
-	@ApiModelProperty(dataType="int")
+	@ApiModelProperty(dataType = "int")
 	private int service_id;
-	@ApiModelProperty(dataType="int")
-	private int created_timestamp;
-	@ApiModelProperty(dataType="LocalTime")
-	private LocalTime estimated_finish_time;
-	@ApiModelProperty(dataType="boolean")
+	@ApiModelProperty(dataType = "LocalTime", example = "2022-12-31 20:32:50")
+	private String created_timestamp;
+	@ApiModelProperty(dataType = "LocalTime", example = "2022-12-31 20:32:50")
+	private String estimated_finish_time;
+	@ApiModelProperty(dataType = "boolean")
 	private boolean paid;
-	
-	public OrderedService(int id, int order_id, int service_id, int created_timestamp, LocalTime estimated_finish_time,
+
+	public OrderedService(int id, int order_id, int service_id, String created_timestamp, String estimated_finish_time,
 			boolean paid) {
 		super();
 		this.id = id;
@@ -55,19 +53,19 @@ public class OrderedService {
 		this.service_id = service_id;
 	}
 
-	public int getCreated_timestamp() {
+	public String getCreated_timestamp() {
 		return created_timestamp;
 	}
 
-	public void setCreated_timestamp(int created_timestamp) {
+	public void setCreated_timestamp(String created_timestamp) {
 		this.created_timestamp = created_timestamp;
 	}
 
-	public LocalTime getEstimated_finish_time() {
+	public String getEstimated_finish_time() {
 		return estimated_finish_time;
 	}
 
-	public void setEstimated_finish_time(LocalTime estimated_finish_time) {
+	public void setEstimated_finish_time(String estimated_finish_time) {
 		this.estimated_finish_time = estimated_finish_time;
 	}
 
@@ -78,6 +76,5 @@ public class OrderedService {
 	public void setPaid(boolean paid) {
 		this.paid = paid;
 	}
-	
-	
+
 }
