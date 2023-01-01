@@ -1,6 +1,7 @@
 package com.komandux.model;
 
 import java.time.LocalTime;
+import java.util.Date;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -25,11 +26,11 @@ public class Transaction {
 	@ApiModelProperty(dataType="TransactionType", name="type")
 	private TransactionType type;
 	
-	@ApiModelProperty(dataType="LocalTime", name="date of creation")
-	private LocalTime  created_timestamp;
+	@ApiModelProperty(dataType="Date", name="date of creation")
+	private Date  created_timestamp;
 	
 	public Transaction(int id, int emp_org_id, int cust_id, int order_id, int amount, TransactionType type,
-			LocalTime created_timestamp) {
+			Date created_timestamp) {
 		super();
 		this.id = id;
 		this.emp_org_id = emp_org_id;
@@ -40,7 +41,7 @@ public class Transaction {
 		this.created_timestamp = created_timestamp;
 	}
 
-	public int getId() {
+    public int getId() {
 		return id;
 	}
 
@@ -88,11 +89,11 @@ public class Transaction {
 		this.type = type;
 	}
 
-	public LocalTime getCreated_timestamp() {
+	public Date getCreated_timestamp() {
 		return created_timestamp;
 	}
 
-	public void setCreated_timestamp(LocalTime created_timestamp) {
+	public void setCreated_timestamp(Date created_timestamp) {
 		this.created_timestamp = created_timestamp;
 	}
 }
