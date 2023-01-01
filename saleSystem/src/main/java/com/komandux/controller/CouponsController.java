@@ -74,9 +74,9 @@ public class CouponsController {
 		}
 	}
 
-	// putEmployee endpoint
+	// putEmployee endpoint, kartu su assign
 	@ApiOperation(value = "Update Coupon", response = Coupon.class, tags = "Coupons")
-	@PutMapping(value = "/organizations/{organization_id}/coupons{coupon_id}")
+	@PutMapping(value = "/organizations/{organization_id}/coupons/{coupon_id}")
 	public ResponseEntity<?> putEmployee(@PathVariable(value = "organization_id") int organization_id,
 			@PathVariable(value = "coupon_id") int coupon_id, @RequestBody Coupon coupon)
 			throws ParseException {
