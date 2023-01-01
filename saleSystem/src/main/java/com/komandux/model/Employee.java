@@ -23,15 +23,6 @@ public class Employee extends User{
 		this.access = access;
 	}
 
-	public Employee(int user_id, int organization_id, String access2) throws ParseException {
-		
-		super(user_id);
-		this.org_id = organization_id;
-		
-		JSONParser parser = new JSONParser();
-		this.access = (JSONObject) parser.parse(access2);
-	}
-
 
 	public int getOrg_id() {
 		return org_id;

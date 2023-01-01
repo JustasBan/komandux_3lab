@@ -1,5 +1,6 @@
 package com.komandux.model;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -21,11 +22,11 @@ public class User {
 	@ApiModelProperty(dataType="String")
 	private String phonenumber;
 	
-	public int getId() {
+	public int getUserId() {
 		return user_id;
 	}
 
-	public void setId(int user_id) {
+	public void setUserId(int user_id) {
 		this.user_id = user_id;
 	}
 
@@ -53,8 +54,9 @@ public class User {
 		this.full_name = full_name;
 	}
 
-	public Date getCreated_date() {
-		return created_date;
+	public String getCreated_date() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+		return sdf.format(created_date);
 	}
 
 	public void setCreated_date(Date created_date) {
@@ -77,10 +79,6 @@ public class User {
 		this.full_name = full_name;
 		this.created_date = created_date;
 		this.phonenumber = phonenumber;
-	}
-
-	public User() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public User(int user_id2) {
