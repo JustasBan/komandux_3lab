@@ -2,9 +2,11 @@ package com.komandux.controller;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.komandux.Tables;
 import com.komandux.model.Employee;
+import com.komandux.model.Shift;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -137,37 +140,32 @@ public class EmployeesController {
 	@ApiOperation(value = "Update Employee", response = Employee.class, tags = "Employee")
 	@PutMapping(value = "/organizations/{organization_id}/employees/{employee_id}")
 	public ResponseEntity<?> putEmployee(@PathVariable(value = "organization_id") int organization_id,
-			@PathVariable(value = "employee_id") int employee_id, @RequestBody Employee employeeDTO) throws ParseException {
+			@PathVariable(value = "employee_id") int employee_id, @RequestBody Employee employeeDTO)
+			throws ParseException {
 
-		String sql = "UPDATE users SET " +
-					 "password_hash = \'"+ employeeDTO.getPassword() + "',"+
-					 "email ='"+ employeeDTO.getEmail() + "',"+
-					 "full_name ='"+ employeeDTO.getFull_name() + "',"+
-					 "phone_number ='"+ employeeDTO.getPhonenumber() + "' "+
-				     "WHERE id= "+employee_id+ ";";
-		
-		String sql2 ="UPDATE employee_organizations SET " +
-				 "user_id ="+ employeeDTO.getUserId() + ","+
-				 "org_id ="+ employeeDTO.getOrg_id() + ","+
-				 "access ='"+ employeeDTO.getAccess() +"' "+
-			     "WHERE user_id= "+employee_id+ " AND org_id="+organization_id+ ";";;
+		String sql = "UPDATE users SET " + "password_hash = \'" + employeeDTO.getPassword() + "'," + "email ='"
+				+ employeeDTO.getEmail() + "'," + "full_name ='" + employeeDTO.getFull_name() + "'," + "phone_number ='"
+				+ employeeDTO.getPhonenumber() + "' " + "WHERE id= " + employee_id + ";";
+
+		String sql2 = "UPDATE employee_organizations SET " + "user_id =" + employeeDTO.getUserId() + "," + "org_id ="
+				+ employeeDTO.getOrg_id() + "," + "access ='" + employeeDTO.getAccess() + "' " + "WHERE user_id= "
+				+ employee_id + " AND org_id=" + organization_id + ";";
+		;
 		try {
 			Connection connection = DriverManager.getConnection(Tables.getJdbcUrl());
 			Statement statement;
-			
+
 			statement = connection.createStatement();
-			statement.executeUpdate(sql+sql2);
-			
+			statement.executeUpdate(sql + sql2);
+
 			statement.close();
-			
+
 			return new ResponseEntity<Employee>(employeeDTO, HttpStatus.OK);
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 	}
-	
 
 	// deleteEmployee endpoint
 	@ApiOperation(value = "delete Employee", tags = "Employee")
@@ -175,23 +173,57 @@ public class EmployeesController {
 	public ResponseEntity<?> deletetEmployee(@PathVariable(value = "organization_id") int organization_id,
 			@PathVariable(value = "employee_id") int employee_id) throws ParseException {
 
-		String sql = "DELETE FROM employee_organizations " +
-				     "WHERE user_id= "+employee_id+" AND org_id=" + organization_id+ ";";
+		String sql = "DELETE FROM employee_organizations " + "WHERE user_id= " + employee_id + " AND org_id="
+				+ organization_id + ";";
 		try {
 			Connection connection = DriverManager.getConnection(Tables.getJdbcUrl());
 			Statement statement;
-			
+
 			statement = connection.createStatement();
 			statement.executeUpdate(sql);
-			
+
 			statement.close();
-			
+
 			return new ResponseEntity<>(HttpStatus.OK);
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 
 			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 	}
+
+	// Add shift endpoint
+	@ApiOperation(value = "Add shift", response = Shift.class, tags = "Employee")
+	@PostMapping(value = "/organizations/{organization_id}/employees/{employee_id}/shifts")
+	public ResponseEntity<?> createShift(@PathVariable(value = "organization_id") int organization_id, @PathVariable(value = "employee_id") int employee_id, @RequestBody Shift shiftDTO) {
+
+		String sql = "INSERT INTO shifts (emp_org_id, start_time, end_time, created_timestamp) VALUES (?,?,?,?)";
+
+		System.out.println(sql);
+
+		try {
+			
+			Connection connection = DriverManager.getConnection(Tables.getJdbcUrl());
+			PreparedStatement statement;
+			statement = connection.prepareStatement(sql);
+			statement.setInt(1, employee_id);
+			Timestamp ts = Timestamp.valueOf(shiftDTO.getStart_time());
+			statement.setTimestamp(2, ts);
+			ts = Timestamp.valueOf(shiftDTO.getEnd_time());
+			statement.setTimestamp(3, ts);
+			statement.setInt(4, shiftDTO.getCreated_timestamp());
+			
+			statement.executeUpdate();
+
+			connection.close();
+			statement.close();
+			return new ResponseEntity<Shift>(shiftDTO, HttpStatus.OK);
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+	}
+
+	// didnt add update shift endpoint, since its unclear what it should update
 }

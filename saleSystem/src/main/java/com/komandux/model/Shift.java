@@ -1,5 +1,7 @@
 package com.komandux.model;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalTime;
 
 import io.swagger.annotations.ApiModel;
@@ -11,14 +13,14 @@ public class Shift {
 	private int id;
 	@ApiModelProperty(dataType="int")
 	private int emp_org_id;
-	@ApiModelProperty(dataType="LocalTime")
-	private LocalTime start_time;
-	@ApiModelProperty(dataType="LocalTime")
-	private LocalTime end_time;
-	@ApiModelProperty(dataType="LocalTime")
-	private LocalTime created_timestamp;
+	@ApiModelProperty(dataType="String", example="2022-12-31 20:32:50")
+	private String start_time;
+	@ApiModelProperty(dataType="String", example="2022-12-31 20:32:50")
+	private String end_time;
+	@ApiModelProperty(dataType="int")
+	private int created_timestamp;
 	
-	public Shift(int id, int emp_org_id, LocalTime start_time, LocalTime end_time, LocalTime created_timestamp) {
+	public Shift(int id, int emp_org_id, String start_time, String end_time, int created_timestamp) {
 		super();
 		this.id = id;
 		this.emp_org_id = emp_org_id;
@@ -43,27 +45,27 @@ public class Shift {
 		this.emp_org_id = emp_org_id;
 	}
 
-	public LocalTime getStart_time() {
+	public String getStart_time() {
 		return start_time;
 	}
 
-	public void setStart_time(LocalTime start_time) {
+	public void setStart_time(String start_time) {
 		this.start_time = start_time;
 	}
 
-	public LocalTime getEnd_time() {
+	public String getEnd_time() {
 		return end_time;
 	}
 
-	public void setEnd_time(LocalTime end_time) {
+	public void setEnd_time(String end_time) {
 		this.end_time = end_time;
 	}
 
-	public LocalTime getCreated_timestamp() {
+	public int getCreated_timestamp() {
 		return created_timestamp;
 	}
 
-	public void setCreated_timestamp(LocalTime created_timestamp) {
+	public void setCreated_timestamp(int created_timestamp) {
 		this.created_timestamp = created_timestamp;
 	}
 	
