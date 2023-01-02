@@ -24,7 +24,7 @@ public class CustomersController {
 	
 	@ApiOperation(value = "add Customer", tags = "Customers")
 	@PostMapping(value = "/customers/")
-	public ResponseEntity<?> createUser(@RequestBody Customer customer) {
+	public ResponseEntity<?> createCustomer(@RequestBody Customer customer) {
 
 		try {
 			
@@ -64,7 +64,7 @@ public class CustomersController {
 	
 	@ApiOperation(value = "get Customer", tags = "Customers")
 	@GetMapping(value = "/customers/{email, password_hash}")
-	public ResponseEntity<?> getUser(String email, String password_hash) {
+	public ResponseEntity<?> getCustomer(String email, String password_hash) {
 
 		try {
 			
@@ -93,9 +93,40 @@ public class CustomersController {
 		}
 	}
 	
+	@ApiOperation(value = "get Customer ID", tags = "Customers")
+	@GetMapping(value = "/customers/{email, password_hash}/id")
+	public ResponseEntity<?> getCustomerId(String email, String password_hash) {
+
+		try {
+			
+			String sql = "SELECT C.id FROM users AS U JOIN customers AS C ON U.id = C.user_id WHERE U.email = '" + email + "' AND password_hash = '" + password_hash + "';";
+			
+			Connection connection = DriverManager.getConnection(Tables.getJdbcUrl());		
+			Statement statement;
+			statement = connection.createStatement();
+			ResultSet result = statement.executeQuery(sql);
+			
+			int id = result.getInt(1);
+			connection.close();
+			statement.close();
+			result.close();
+			
+			if(id == 0)
+			{
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+			
+			return new ResponseEntity<String>(
+					Integer.toString(id), HttpStatus.OK);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+	}
+	
 	@ApiOperation(value = "update Customer", tags = "Customers")
 	@PutMapping(value = "/customers/{email, password_hash}")
-	public ResponseEntity<?> updateUser(String email, String password_hash, @RequestBody Customer customer) {
+	public ResponseEntity<?> updateCustomer(String email, String password_hash, @RequestBody Customer customer) {
 
 		try {
 			
@@ -120,7 +151,7 @@ public class CustomersController {
 	
 	@ApiOperation(value = "delete Customer", tags = "Customers")
 	@DeleteMapping(value = "/customers/{email, password_hash}")
-	public ResponseEntity<?> deleteUser(String email, String password_hash) {
+	public ResponseEntity<?> deleteCustomer(String email, String password_hash) {
 
 		try {
 			
