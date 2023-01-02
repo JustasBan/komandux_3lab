@@ -8,8 +8,6 @@ import io.swagger.annotations.ApiModelProperty;
 
 @ApiModel
 public class Transaction {
-	@ApiModelProperty(dataType="int", name="transaction Id")
-	private int id;
 	
 	@ApiModelProperty(dataType="int", name="organization Id")
 	private int emp_org_id;
@@ -26,27 +24,18 @@ public class Transaction {
 	@ApiModelProperty(dataType="TransactionType", name="type")
 	private TransactionType type;
 	
-	@ApiModelProperty(dataType="Date", name="date of creation")
-	private Date  created_timestamp;
+	@ApiModelProperty(dataType="String", name="date of creation")
+	private String  created_timestamp;
 	
-	public Transaction(int id, int emp_org_id, int cust_id, int order_id, int amount, TransactionType type,
-			Date created_timestamp) {
+	public Transaction(int emp_org_id, int cust_id, int order_id, int amount, TransactionType type,
+			String created_timestamp) {
 		super();
-		this.id = id;
 		this.emp_org_id = emp_org_id;
 		this.cust_id = cust_id;
 		this.order_id = order_id;
 		this.amount = amount;
 		this.type = type;
 		this.created_timestamp = created_timestamp;
-	}
-
-    public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public int getEmp_org_id() {
@@ -89,11 +78,11 @@ public class Transaction {
 		this.type = type;
 	}
 
-	public Date getCreated_timestamp() {
+	public String getCreated_timestamp() {
 		return created_timestamp;
 	}
 
-	public void setCreated_timestamp(Date created_timestamp) {
+	public void setCreated_timestamp(String created_timestamp) {
 		this.created_timestamp = created_timestamp;
 	}
 }
