@@ -113,9 +113,9 @@ public class EmployeesController {
 			while (rs.next()) {
 				JSONParser parser = new JSONParser();
 				java.util.Date newDate = rs.getTimestamp("created_timestamp");
-				Employee emp = new Employee(rs.getInt("user_id"), rs.getInt("org_id"),
+				Employee emp = new Employee(rs.getInt("org_id"),
 						(JSONObject) parser.parse(rs.getString("access")), rs.getString("password_hash"),
-						rs.getString("email"), rs.getString("full_name"), newDate, rs.getString("phone_number"));
+						rs.getString("email"), rs.getString("full_name"), newDate.toString(), rs.getString("phone_number"));
 
 				connection.close();
 				rs.close();
@@ -147,7 +147,7 @@ public class EmployeesController {
 				+ employeeDTO.getEmail() + "'," + "full_name ='" + employeeDTO.getFull_name() + "'," + "phone_number ='"
 				+ employeeDTO.getPhonenumber() + "' " + "WHERE id= " + employee_id + ";";
 
-		String sql2 = "UPDATE employee_organizations SET " + "user_id =" + employeeDTO.getUserId() + "," + "org_id ="
+		String sql2 = "UPDATE employee_organizations SET " + "org_id ="
 				+ employeeDTO.getOrg_id() + "," + "access ='" + employeeDTO.getAccess() + "' " + "WHERE user_id= "
 				+ employee_id + " AND org_id=" + organization_id + ";";
 		;
