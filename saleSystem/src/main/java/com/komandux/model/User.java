@@ -1,9 +1,5 @@
 package com.komandux.model;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalTime;
-import java.util.Date;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
