@@ -139,7 +139,7 @@ public class ServicesController {
 	public ResponseEntity<?> getService(@PathVariable(value = "organization_id") int organization_id) {
 
 		try {
-			
+
 			Connection connection = DriverManager.getConnection(Tables.getJdbcUrl());
 			String sql = "SELECT id, org_id, price, description, created_timestamp, available, loyalty_point_reward FROM services WHERE id = ?;";
 
@@ -147,12 +147,11 @@ public class ServicesController {
 			p = connection.prepareStatement(sql);
 			p.setInt(1, organization_id);
 			ResultSet rs = p.executeQuery();
-			
 			ArrayList<Service> rows = new ArrayList<Service>();
 			while (rs.next()) {
-				rows.add(new Service(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getTimestamp(5).toString(), rs.getBoolean(6), rs.getInt(7)));
+				rows.add(new Service(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4),
+						rs.getTimestamp(5).toString(), rs.getBoolean(6), rs.getInt(7)));
 			}
-
 			return new ResponseEntity<ArrayList<Service>>(rows, HttpStatus.OK);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -164,7 +163,8 @@ public class ServicesController {
 	// Set Loyalty Point Reward endpoint
 	@ApiOperation(value = "Set Loyalty Point Reward", response = Service.class, tags = "Services")
 	@PutMapping(value = "/organizations/{organization_id}/services/{service_id}/setLoyaltyPointReward")
-	public ResponseEntity<?> setLoyalty(@PathVariable(value = "organization_id") int organization_id, @PathVariable(value = "service_id") int service_id, int reward) {
+	public ResponseEntity<?> setLoyalty(@PathVariable(value = "organization_id") int organization_id,
+			@PathVariable(value = "service_id") int service_id, int reward) {
 
 		try {
 			Connection connection = DriverManager.getConnection(Tables.getJdbcUrl());
@@ -178,14 +178,15 @@ public class ServicesController {
 			p.setInt(3, organization_id);
 
 			p.executeUpdate();
-			
+
 			sql = "SELECT id, org_id, price, description, created_timestamp, available, loyalty_point_reward FROM services WHERE org_id = ? AND id = ?;";
 			p = connection.prepareStatement(sql);
 			p.setInt(1, organization_id);
 			p.setInt(2, service_id);
 			ResultSet rs = p.executeQuery();
 
-			return new ResponseEntity<Service>(new Service(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4), rs.getTimestamp(5).toString(), rs.getBoolean(6), rs.getInt(7)), HttpStatus.OK);
+			return new ResponseEntity<Service>(new Service(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getString(4),
+					rs.getTimestamp(5).toString(), rs.getBoolean(6), rs.getInt(7)), HttpStatus.OK);
 		} catch (SQLException e) {
 			e.printStackTrace();
 

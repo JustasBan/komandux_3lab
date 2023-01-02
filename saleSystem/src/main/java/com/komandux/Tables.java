@@ -10,6 +10,23 @@ public class Tables {
 
 	public static void createAllTables() throws SQLException {
 		Connection connection = DriverManager.getConnection(getJdbcUrl());
+		// deleteTable(connection, "coupons_services");
+		// deleteTable(connection, "coupons");
+		// deleteTable(connection, "activity_logs");
+		// deleteTable(connection, "shifts");
+		// deleteTable(connection, "employee_organizations");
+		// deleteTable(connection, "ordered_services");
+		// deleteTable(connection, "orders");
+		// deleteTable(connection, "loyalty_points");
+		// deleteTable(connection, "ratings");
+		// deleteTable(connection, "loyalty_deals");
+		// deleteTable(connection, "discounts");
+		// deleteTable(connection, "services");
+		// deleteTable(connection, "organizations");
+		// deleteTable(connection, "customers");
+		// deleteTable(connection, "transactions");
+		// deleteTable(connection, "invoices");
+		// deleteTable(connection, "users");
 		createTableUsers(connection);
 		createTableInvoices(connection);
 		createTableTransactions(connection);
@@ -27,6 +44,19 @@ public class Tables {
 		createTableActivityLogs(connection);
 		createTableCoupons(connection);
 		createTableCouponsServices(connection);
+		System.out.println("success");
+	}
+
+	public static void deleteTable(Connection connection, String tableName) {
+		String sql = "drop table if exists " + tableName;
+
+		Statement statement;
+		try {
+			statement = connection.createStatement();
+			statement.executeUpdate(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void createTableUsers(Connection connection) {
@@ -189,7 +219,7 @@ public class Tables {
 				+ "settings 			JSON,\r\n"
 				+ "created_timestamp 	INTEGER,\r\n"
 				+ "opening 				TIMESTAMP,\r\n"
-				+ "closing 				TIMESTAMP\r\n"
+				+ "closing 				TIMESTAMP,\r\n"
 				+ "location 			TEXT\r\n"
 				+ ");";
 
@@ -326,6 +356,7 @@ public class Tables {
 				+ "order_id				INTEGER,\r\n"
 				+ "service_id 			INTEGER,\r\n"
 				+ "created_timestamp 	TIMESTAMP,\r\n"
+				+ "estimated_finish_time 	TIMESTAMP,\r\n"
 				+ "FOREIGN KEY (order_id) REFERENCES orders(id)\r\n"
 				+ ");";
 
