@@ -1,7 +1,5 @@
 package com.komandux.model;
 
-import java.time.LocalTime;
-
 import org.json.simple.JSONObject;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -20,14 +18,14 @@ public class Organization {
 	@ApiModelProperty(dataType="JSONObject", name="settings")
 	private JSONObject settings;
 	
-	@ApiModelProperty(dataType="LocalTime", name="created timestamp")
-	private LocalTime created_timestamp;
+	@ApiModelProperty(dataType="LocalTime", name="created timestamp", example="2022-12-31 20:32:50")
+	private String created_timestamp;
 	
-	@ApiModelProperty(dataType="int", name="opening")
-	private int opening;
+	@ApiModelProperty(dataType="String", example="2022-12-31 20:32:50")
+	private String opening;
 	
-	public Organization(int id, String name, JSONObject credentials, JSONObject settings, LocalTime created_timestamp,
-			int opening, int closing, String location) {
+	public Organization(int id, String name, JSONObject credentials, JSONObject settings, String created_timestamp,
+			String opening, String closing, String location) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -71,27 +69,27 @@ public class Organization {
 		this.settings = settings;
 	}
 
-	public LocalTime getCreated_timestamp() {
+	public String getCreated_timestamp() {
 		return created_timestamp;
 	}
 
-	public void setCreated_timestamp(LocalTime created_timestamp) {
+	public void setCreated_timestamp(String created_timestamp) {
 		this.created_timestamp = created_timestamp;
 	}
 
-	public int getOpening() {
+	public String getOpening() {
 		return opening;
 	}
 
-	public void setOpening(int opening) {
+	public void setOpening(String opening) {
 		this.opening = opening;
 	}
 
-	public int getClosing() {
+	public String getClosing() {
 		return closing;
 	}
 
-	public void setClosing(int closing) {
+	public void setClosing(String closing) {
 		this.closing = closing;
 	}
 
@@ -103,8 +101,8 @@ public class Organization {
 		this.location = location;
 	}
 
-	@ApiModelProperty(dataType="int", name="closing")
-	private int closing;
+	@ApiModelProperty(dataType="String", example="2022-12-31 20:32:50")
+	private String closing;
 	
 	@ApiModelProperty(dataType="String", name="location")
 	private String location;

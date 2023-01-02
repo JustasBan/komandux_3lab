@@ -1,11 +1,7 @@
 package com.komandux.model;
-
-import java.time.LocalTime;
 import java.util.Date;
 
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

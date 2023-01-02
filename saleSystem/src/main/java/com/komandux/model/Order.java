@@ -23,13 +23,13 @@ public class Order {
 	private String note;
 
 	@ApiModelProperty(dataType="LocalTime", name="requested timestamp")
-	private LocalTime requested_timestamp;
+	private String requested_timestamp;
 
 	@ApiModelProperty(dataType="LocalTime", name="estimated timestamp")
-	private LocalTime estimated_timestamp;
+	private String estimated_timestamp;
 
-	public Order(int id, int cust_id, int tracking_code, int status, String note, LocalTime requested_timestamp,
-			LocalTime estimated_timestamp) {
+	public Order(int id, int cust_id, int tracking_code, int status, String note, String requested_timestamp,
+			String estimated_timestamp) {
 		super();
 		Id = id;
 		Cust_id = cust_id;
@@ -80,19 +80,19 @@ public class Order {
 		this.note = note;
 	}
 
-	public LocalTime getRequested_timestamp() {
+	public String getRequested_timestamp() {
 		return requested_timestamp;
 	}
 
-	public void setRequested_timestamp(LocalTime requested_timestamp) {
+	public void setRequested_timestamp(String requested_timestamp) {
 		this.requested_timestamp = requested_timestamp;
 	}
 
-	public LocalTime getEstimated_timestamp() {
+	public String getEstimated_timestamp() {
 		return estimated_timestamp;
 	}
 
-	public void setEstimated_timestamp(LocalTime estimated_timestamp) {
+	public void setEstimated_timestamp(String estimated_timestamp) {
 		this.estimated_timestamp = estimated_timestamp;
 	}
 }
