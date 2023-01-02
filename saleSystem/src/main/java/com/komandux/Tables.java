@@ -210,7 +210,7 @@ public class Tables {
 				+ "description 			TEXT,\r\n"
 				+ "created_timestamp 	INTEGER,\r\n"
 				+ "available 			BOOLEAN,\r\n"
-				+ "closing 				TIMESTAMP,\r\n"
+				+ "loyalty_point_reward 				INTEGER,\r\n"
 				+ "FOREIGN KEY (org_id) REFERENCES organizations(id)\r\n"
 				+ ");";
 

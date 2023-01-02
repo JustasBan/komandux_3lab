@@ -15,12 +15,29 @@ public class Discount {
 	private int percentage_off;
 	@ApiModelProperty(dataType="int")
 	private int exact_price;
-	@ApiModelProperty(dataType="LocalTime")
-	private LocalTime created_timestamp;
+	@ApiModelProperty(dataType="LocalTime", example="2022-12-31 20:32:50")
+	private String created_timestamp;
+	
+	public Discount(int id, int service_id, int percentage_off, int exact_price, String created_timestamp) {
+		super();
+		this.id = id;
+		this.service_id = service_id;
+		this.percentage_off = percentage_off;
+		this.exact_price = exact_price;
+		this.created_timestamp = created_timestamp;
+	}
 	
 	public Discount(int id, int service_id, int percentage_off, int exact_price, LocalTime created_timestamp) {
 		super();
 		this.id = id;
+		this.service_id = service_id;
+		this.percentage_off = percentage_off;
+		this.exact_price = exact_price;
+		this.created_timestamp = created_timestamp.toString();
+	}
+	
+	public Discount(int service_id, int percentage_off, int exact_price, String created_timestamp) {
+		super();
 		this.service_id = service_id;
 		this.percentage_off = percentage_off;
 		this.exact_price = exact_price;
@@ -59,11 +76,11 @@ public class Discount {
 		this.exact_price = exact_price;
 	}
 
-	public LocalTime getCreated_timestamp() {
+	public String getCreated_timestamp() {
 		return created_timestamp;
 	}
 
-	public void setCreated_timestamp(LocalTime created_timestamp) {
+	public void setCreated_timestamp(String created_timestamp) {
 		this.created_timestamp = created_timestamp;
 	}
 }
