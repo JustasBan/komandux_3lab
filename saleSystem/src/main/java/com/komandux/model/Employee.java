@@ -1,11 +1,6 @@
 package com.komandux.model;
 
-import java.time.LocalTime;
-import java.util.Date;
-
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -17,8 +12,8 @@ public class Employee extends User{
 	@ApiModelProperty(dataType="JSONObject")
 	private JSONObject access;
 	
-	public Employee(int user_id, int org_id, JSONObject access, String password, String email, String full_name, Date created_date, String phonenumber) {
-		super(user_id, password, email, full_name, created_date, phonenumber);
+	public Employee(int org_id, JSONObject access, String password, String email, String full_name, String created_date, String phonenumber) {
+		super(password, email, full_name, created_date, phonenumber);
 		this.org_id = org_id;
 		this.access = access;
 	}

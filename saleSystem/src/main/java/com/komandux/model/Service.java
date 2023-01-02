@@ -19,8 +19,8 @@ public class Service {
 	@ApiModelProperty(dataType="String")
 	private String description;
 	
-	@ApiModelProperty(dataType="LocalTime")
-	private LocalTime created_timestamp;
+	@ApiModelProperty(dataType="LocalTime", example="2022-12-31 20:32:50")
+	private String created_timestamp;
 	
 	@ApiModelProperty(dataType="Boolean")
 	private Boolean available;
@@ -28,7 +28,7 @@ public class Service {
 	@ApiModelProperty(dataType="int")
 	private int loyalty_point_reward;
 
-	public Service(int id, int org_id, int price, String description, LocalTime created_timestamp, Boolean available,
+	public Service(int id, int org_id, int price, String description, String created_timestamp, Boolean available,
 			int loyalty_point_reward) {
 		super();
 		this.id = id;
@@ -72,11 +72,11 @@ public class Service {
 		this.description = description;
 	}
 
-	public LocalTime getCreated_timestamp() {
+	public String getCreated_timestamp() {
 		return created_timestamp;
 	}
 
-	public void setCreated_timestamp(LocalTime created_timestamp) {
+	public void setCreated_timestamp(String created_timestamp) {
 		this.created_timestamp = created_timestamp;
 	}
 

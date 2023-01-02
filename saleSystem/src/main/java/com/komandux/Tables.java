@@ -13,7 +13,7 @@ public class Tables {
 		createTableUsers(connection);
 		createTableInvoices(connection);
 		createTableTransactions(connection);
-		createTablCustomers(connection);
+		createTableCustomers(connection);
 		createTableOrganizations(connection);
 		createTableServices(connection);
 		createTableDiscounts(connection);
@@ -90,11 +90,11 @@ public class Tables {
 		}
 	}
 
-	public static void createTablCustomers(Connection connection) {
+	public static void createTableCustomers(Connection connection) {
 		String sql = "create table if not exists customers (\r\n"
 				+ "  id                INTEGER     PRIMARY KEY AUTOINCREMENT, \r\n"
 				+ "  user_id           INTEGER     NOT NULL,\r\n"
-				+ "  birth_date        DATE\r\n"
+				+ "  birth_date        CHAR(20)\r\n"
 				+ ");";
 
 		Statement statement;
@@ -190,6 +190,7 @@ public class Tables {
 				+ "created_timestamp 	INTEGER,\r\n"
 				+ "opening 				TIMESTAMP,\r\n"
 				+ "closing 				TIMESTAMP\r\n"
+				+ "location 			TEXT\r\n"
 				+ ");";
 
 		Statement statement;
@@ -209,7 +210,7 @@ public class Tables {
 				+ "description 			TEXT,\r\n"
 				+ "created_timestamp 	INTEGER,\r\n"
 				+ "available 			BOOLEAN,\r\n"
-				+ "closing 				TIMESTAMP,\r\n"
+				+ "loyalty_point_reward 				INTEGER,\r\n"
 				+ "FOREIGN KEY (org_id) REFERENCES organizations(id)\r\n"
 				+ ");";
 

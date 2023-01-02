@@ -102,7 +102,7 @@ public class EmployeesController {
 	public ResponseEntity<?> getEmployee(@PathVariable(value = "organization_id") int organization_id,
 			@PathVariable(value = "employee_id") int employee_id) throws ParseException {
 
-		String sql = "SELECT user_id, org_id, access, password_hash, email, full_name, created_timestamp, phone_number FROM users INNER JOIN employee_organizations ON users.id = employee_organizations.user_id WHERE users.id ="
+		String sql = "SELECT user_id, org_id, access, password_hash, email, full_name, created_timestamp, phone_number FROM users, employee_organizations WHERE users.id = employee_organizations.user_id AND users.id ="
 				+ employee_id + " AND employee_organizations.org_id =" + organization_id + ";";
 		try {
 			Connection connection = DriverManager.getConnection(Tables.getJdbcUrl());
@@ -110,12 +110,13 @@ public class EmployeesController {
 			statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery(sql);
 
+			System.out.println(sql);
 			while (rs.next()) {
 				JSONParser parser = new JSONParser();
 				java.util.Date newDate = rs.getTimestamp("created_timestamp");
-				Employee emp = new Employee(rs.getInt("user_id"), rs.getInt("org_id"),
+				Employee emp = new Employee(rs.getInt("org_id"),
 						(JSONObject) parser.parse(rs.getString("access")), rs.getString("password_hash"),
-						rs.getString("email"), rs.getString("full_name"), newDate, rs.getString("phone_number"));
+						rs.getString("email"), rs.getString("full_name"), newDate.toString(), rs.getString("phone_number"));
 
 				connection.close();
 				rs.close();
@@ -147,7 +148,7 @@ public class EmployeesController {
 				+ employeeDTO.getEmail() + "'," + "full_name ='" + employeeDTO.getFull_name() + "'," + "phone_number ='"
 				+ employeeDTO.getPhonenumber() + "' " + "WHERE id= " + employee_id + ";";
 
-		String sql2 = "UPDATE employee_organizations SET " + "user_id =" + employeeDTO.getUserId() + "," + "org_id ="
+		String sql2 = "UPDATE employee_organizations SET " + "org_id ="
 				+ employeeDTO.getOrg_id() + "," + "access ='" + employeeDTO.getAccess() + "' " + "WHERE user_id= "
 				+ employee_id + " AND org_id=" + organization_id + ";";
 		;
@@ -195,14 +196,15 @@ public class EmployeesController {
 	// Add shift endpoint
 	@ApiOperation(value = "Add shift", response = Shift.class, tags = "Employee")
 	@PostMapping(value = "/organizations/{organization_id}/employees/{employee_id}/shifts")
-	public ResponseEntity<?> createShift(@PathVariable(value = "organization_id") int organization_id, @PathVariable(value = "employee_id") int employee_id, @RequestBody Shift shiftDTO) {
+	public ResponseEntity<?> createShift(@PathVariable(value = "organization_id") int organization_id,
+			@PathVariable(value = "employee_id") int employee_id, @RequestBody Shift shiftDTO) {
 
 		String sql = "INSERT INTO shifts (emp_org_id, start_time, end_time, created_timestamp) VALUES (?,?,?,?)";
 
 		System.out.println(sql);
 
 		try {
-			
+
 			Connection connection = DriverManager.getConnection(Tables.getJdbcUrl());
 			PreparedStatement statement;
 			statement = connection.prepareStatement(sql);
@@ -212,7 +214,7 @@ public class EmployeesController {
 			ts = Timestamp.valueOf(shiftDTO.getEnd_time());
 			statement.setTimestamp(3, ts);
 			statement.setInt(4, shiftDTO.getCreated_timestamp());
-			
+
 			statement.executeUpdate();
 
 			connection.close();
@@ -225,5 +227,37 @@ public class EmployeesController {
 		}
 	}
 
-	// didnt add update shift endpoint, since its unclear what it should update from API documentation
+	// update shift endpoint
+	@ApiOperation(value = "Update shift", response = Shift.class, tags = "Employee")
+	@PutMapping(value = "/organizations/{organization_id}/employees/{employee_id}/shifts/{shift_id}")
+	public ResponseEntity<?> updateShift(@PathVariable(value = "organization_id") int organization_id,
+			@PathVariable(value = "employee_id") int employee_id, @RequestBody Shift shiftDTO,
+			@PathVariable(value = "shift_id") int shift_id) {
+
+		String sql = "UPDATE shifts SET start_time = ?, end_time = ? WHERE id = ?";
+
+		System.out.println(sql);
+
+		try {
+
+			Connection connection = DriverManager.getConnection(Tables.getJdbcUrl());
+			PreparedStatement statement;
+			statement = connection.prepareStatement(sql);
+			Timestamp ts = Timestamp.valueOf(shiftDTO.getStart_time());
+			statement.setTimestamp(1, ts);
+			ts = Timestamp.valueOf(shiftDTO.getEnd_time());
+			statement.setTimestamp(2, ts);
+			statement.setInt(3, shift_id);
+
+			statement.executeUpdate();
+
+			connection.close();
+			statement.close();
+			return new ResponseEntity<Shift>(shiftDTO, HttpStatus.OK);
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+	}
 }
