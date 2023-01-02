@@ -190,6 +190,7 @@ public class Tables {
 				+ "created_timestamp 	INTEGER,\r\n"
 				+ "opening 				TIMESTAMP,\r\n"
 				+ "closing 				TIMESTAMP\r\n"
+				+ "location 			TEXT\r\n"
 				+ ");";
 
 		Statement statement;

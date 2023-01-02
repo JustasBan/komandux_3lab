@@ -102,7 +102,7 @@ public class EmployeesController {
 	public ResponseEntity<?> getEmployee(@PathVariable(value = "organization_id") int organization_id,
 			@PathVariable(value = "employee_id") int employee_id) throws ParseException {
 
-		String sql = "SELECT user_id, org_id, access, password_hash, email, full_name, created_timestamp, phone_number FROM users INNER JOIN employee_organizations ON users.id = employee_organizations.user_id WHERE users.id ="
+		String sql = "SELECT user_id, org_id, access, password_hash, email, full_name, created_timestamp, phone_number FROM users, employee_organizations WHERE users.id = employee_organizations.user_id AND users.id ="
 				+ employee_id + " AND employee_organizations.org_id =" + organization_id + ";";
 		try {
 			Connection connection = DriverManager.getConnection(Tables.getJdbcUrl());
@@ -110,6 +110,7 @@ public class EmployeesController {
 			statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery(sql);
 
+			System.out.println(sql);
 			while (rs.next()) {
 				JSONParser parser = new JSONParser();
 				java.util.Date newDate = rs.getTimestamp("created_timestamp");
